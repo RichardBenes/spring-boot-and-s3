@@ -5,6 +5,7 @@ import java.time.Instant;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -24,5 +25,12 @@ public class MyController {
 
         return ResponseEntity
             .ok("Hello " + this.getNumber() + " at " + Instant.now());
-    }    
+    }
+
+    @GetMapping("/bucket/{bucketName}")
+    ResponseEntity<?> getBucketKeys(
+        @PathVariable("bucketName") String bucketName
+    ) {
+        return ResponseEntity.ok().body(bucketName);
+    }
 }
