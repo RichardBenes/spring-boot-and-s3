@@ -12,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
-import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
 
 @Controller
@@ -33,11 +33,18 @@ public class MyController {
         @Value("${aws.secretKey}") String secretKey
     ) {
 
-        log.info(accessKey);
-        log.info(secretKey);
+        var awsCreds =
+            StaticCredentialsProvider.create(
+                AwsBasicCredentials
+                    .create(accessKey, secretKey));
 
         region = Region.EU_CENTRAL_1;
-        s3Client = S3Client.builder().region(region).build();
+        s3Client = 
+            S3Client
+                .builder()
+                .credentialsProvider(awsCreds)
+                .region(region)
+                .build();
     }
 
     @GetMapping("/")
