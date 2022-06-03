@@ -1,1 +1,5 @@
 server.port: 20000
+
+aws:
+  accessKey: ${envAwsAccessKey:Please set the envAwsAccessKey env var!}
+  secretKey: ${envAwsSecretKey:Please set the envAwsSecretKey env var!}

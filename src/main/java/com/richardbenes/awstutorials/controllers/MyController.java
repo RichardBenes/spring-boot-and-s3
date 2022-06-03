@@ -14,6 +14,9 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
+
 @Controller
 @Getter
 @Slf4j
@@ -25,7 +28,14 @@ public class MyController {
     final Region region;
     final S3Client s3Client;
 
-    public MyController() {
+    public MyController(
+        @Value("${aws.accessKey}") String accessKey,
+        @Value("${aws.secretKey}") String secretKey
+    ) {
+
+        log.info(accessKey);
+        log.info(secretKey);
+
         region = Region.EU_CENTRAL_1;
         s3Client = S3Client.builder().region(region).build();
     }
